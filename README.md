@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+AI Automation Developer Challenge
 
-## Getting Started
+This project was developed as part of the AI Automation Developer Challenge. It demonstrates a full-stack solution for building an interactive application using Next.js, Supabase, and TypeScript without relying on local storage for data persistence.
 
-First, run the development server:
+🚀 Features
 
-```bash
+✅ Next.js 13 (App Router) for server-side rendering and routing.
+
+✅ Supabase as a backend-as-a-service for authentication and database.
+
+✅ Persistent Data Storage via Supabase (no local storage).
+
+✅ Fully typed with TypeScript for better maintainability.
+
+🛠️ Tech Stack
+
+Next.js
+
+Supabase
+
+TypeScript
+
+📂 Project Structure
+src/
+ ├── app/                # Next.js App Router pages and layouts
+ │   ├── lib/            # Supabase client configuration
+ │   └── components/     # UI components
+ ├── styles/             # Global styles
+ └── ...
+
+🔧 Installation
+
+Clone the repository
+
+git clone https://github.com/DocMX/AI-Automation-Developer-Challenge-.git
+cd AI-Automation-Developer-Challenge-
+
+
+Install dependencies
+
+npm install
+
+
+Set environment variables
+Create a .env.local file in the root directory and add:
+
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+
+
+Run the development server
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+▶️ Usage
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Navigate to http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create and manage items using the Supabase-powered backend.
 
-## Learn More
+✅ Deployment
 
-To learn more about Next.js, take a look at the following resources:
+You can deploy this project on Vercel:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+📜 License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License.

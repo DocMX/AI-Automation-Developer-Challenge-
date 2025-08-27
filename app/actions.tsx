@@ -15,12 +15,15 @@ export async function fetchTodos() {
 export async function addTodo(title: string) {
   if (!title.trim()) return { ok: false, error: "Title is required." };
 
-  const { error } = await supabaseServer.from("todos").insert({
-    title: title.trim(),
-  });
+  const { data, error } = await supabaseServer
+    .from("todos")
+    .insert({ title: title.trim() })
+    .select() // <--- importante para obtener el objeto insertado
+    .single(); // <--- para obtener un solo objeto
 
-  return { ok: !error, error: error?.message };
+  return { ok: !error, error: error?.message, data };
 }
+
 
 export async function toggleTodo(id: string, completed: boolean) {
   const { error } = await supabaseServer

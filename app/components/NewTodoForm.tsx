@@ -24,13 +24,16 @@ export default function NewTodoForm({ onAdd }: Props) {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title: title.trim() }),
+          body: JSON.stringify({
+            json: {
+              title: title.trim(),
+            },
+          }),
         }
       );
 
       const data = await res.json();
       const enrichedTitle = data?.title || title.trim();
-
 
       await addTodo(enrichedTitle);
 

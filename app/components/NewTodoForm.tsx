@@ -20,7 +20,7 @@ export default function NewTodoForm({ onAdd }: Props) {
     try {
       //webhook n8n
       const res = await fetch(
-        "https://jorgevega.app.n8n.cloud/webhook-test/webhook",
+        "https://jorgevega.app.n8n.cloud/webhook/webhook",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

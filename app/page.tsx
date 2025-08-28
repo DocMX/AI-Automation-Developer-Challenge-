@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchTodos, addTodo, toggleTodo, updateTitle, deleteTodo } from "./actions";
+import {
+  fetchTodos,
+  addTodo,
+  toggleTodo,
+  updateTitle,
+  deleteTodo,
+} from "./actions";
 import NewTodoForm from "./components/NewTodoForm";
 import TodoTable from "./components/TodoTable";
 
@@ -19,8 +25,12 @@ export default function TodoPage() {
 
   const loadTodos = async () => {
     setLoading(true);
-    const { todos: data } = await fetchTodos();
-    setTodos(data);
+    try {
+      const { todos: data } = await fetchTodos();
+      setTodos(data);
+    } catch (err) {
+      console.error("Error loading todos:", err);
+    }
     setLoading(false);
   };
 
@@ -29,42 +39,98 @@ export default function TodoPage() {
   }, []);
 
   const pageCount = Math.ceil(todos.length / pageSize);
-  const currentTodos = todos.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
+  const currentTodos = todos.slice(
+    currentPage * pageSize,
+    (currentPage + 1) * pageSize
+  );
 
   const handlePrev = () => setCurrentPage((p) => Math.max(p - 1, 0));
-  const handleNext = () => setCurrentPage((p) => Math.min(p + 1, pageCount - 1));
+  const handleNext = () =>
+    setCurrentPage((p) => Math.min(p + 1, pageCount - 1));
 
+  // Optimistic UI Handlers
+
+  const handleAdd = async (title: string) => {
+    const tempId = Date.now().toString(); // id temporary
+    const newTodo: Todo = { id: tempId, title, completed: false };
+
+    // Añadir localmente
+    setTodos((prev) => [newTodo, ...prev]);
+    setCurrentPage(0);
+
+    try {
+      await addTodo(title);
+      await loadTodos(); // reload
+    } catch (err) {
+      console.error("Error adding todo:", err);
+      // Revert if fails
+      setTodos((prev) => prev.filter((t) => t.id !== tempId));
+    }
+  };
+
+  const handleToggle = async (id: string, completed: boolean) => {
+    setTodos((prev) =>
+      prev.map((todo) => (todo.id === id ? { ...todo, completed } : todo))
+    );
+
+    try {
+      await toggleTodo(id, completed);
+    } catch (err) {
+      console.error("Error toggling todo:", err);
+      // Revert if fails
+      setTodos((prev) =>
+        prev.map((todo) =>
+          todo.id === id ? { ...todo, completed: !completed } : todo
+        )
+      );
+    }
+  };
+
+  const handleUpdateTitle = async (id: string, title: string) => {
+    const oldTodo = todos.find((t) => t.id === id);
+    if (!oldTodo) return;
+
+    // Update immediately
+    setTodos((prev) => prev.map((t) => (t.id === id ? { ...t, title } : t)));
+
+    try {
+      await updateTitle(id, title);
+    } catch (err) {
+      console.error("Error updating title:", err);
+      setTodos((prev) => prev.map((t) => (t.id === id ? oldTodo : t)));
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const deletedTodo = todos.find((t) => t.id === id);
+    if (!deletedTodo) return;
+
+    setTodos((prev) => prev.filter((t) => t.id !== id));
+
+    try {
+      await deleteTodo(id);
+    } catch (err) {
+      console.error("Error deleting todo:", err);
+      setTodos((prev) => [deletedTodo, ...prev]);
+    }
+  };
+
+  // Render
   if (loading) return <p className="p-6">Loading...</p>;
 
   return (
     <main className="mx-auto max-w-3xl p-6 space-y-6">
       <h1 className="text-2xl font-bold">To Do List</h1>
 
-      <NewTodoForm
-        onAdd={async (title) => {
-          await addTodo(title);
-          await loadTodos();
-          setCurrentPage(0); // volver a la página más reciente
-        }}
-      />
+      <NewTodoForm onAdd={handleAdd} />
 
       <TodoTable
         todos={currentTodos}
-        onToggle={async (id, completed) => {
-          await toggleTodo(id, completed);
-          await loadTodos();
-        }}
-        onUpdateTitle={async (id, title) => {
-          await updateTitle(id, title);
-          await loadTodos();
-        }}
-        onDelete={async (id) => {
-          await deleteTodo(id);
-          await loadTodos();
-        }}
+        onToggle={handleToggle}
+        onUpdateTitle={handleUpdateTitle}
+        onDelete={handleDelete}
       />
 
-      {/* Navegación de páginas */}
       {todos.length > pageSize && (
         <div className="flex justify-between mt-4">
           <button
@@ -89,4 +155,3 @@ export default function TodoPage() {
     </main>
   );
 }
-

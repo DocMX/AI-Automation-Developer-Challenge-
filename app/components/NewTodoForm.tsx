@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, use, useState } from "react";
 import { addTodo } from "../actions";
 
 interface Props {
@@ -24,8 +24,10 @@ export default function NewTodoForm({ onAdd }: Props) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            title: title.trim(),
-            userNumber: "+524921739311", // my telephone number with country code
+            json: {
+              title: title.trim(),
+              userNumber: "+524921739311", // my telephone number with country code
+            },
           }),
         }
       );

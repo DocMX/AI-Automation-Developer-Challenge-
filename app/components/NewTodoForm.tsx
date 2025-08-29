@@ -18,10 +18,8 @@ export default function NewTodoForm({ onAdd }: Props) {
     setLoading(true);
 
     try {
-      //webhook n8n  "https://jorgevega.app.n8n.cloud/webhook/webhook",
       const res = await fetch(
         "https://jorgevega.app.n8n.cloud/webhook-test/webhook",
-
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -32,18 +30,26 @@ export default function NewTodoForm({ onAdd }: Props) {
         }
       );
 
+      if (!res.ok) {
+        throw new Error(`Webhook failed with status ${res.status}`);
+      }
+
       const data = await res.json();
-      const enrichedTitle = data?.title || title.trim();
 
+      if (!data?.title) {
+        throw new Error("No enriched title returned from webhook");
+      }
+
+      const enrichedTitle = data.title;
+
+      // Solo aquí agregamos la tarea
       await addTodo(enrichedTitle);
-
       onAdd(enrichedTitle);
 
       setTitle("");
     } catch (err) {
       console.error("Error adding task:", err);
-      await addTodo(title.trim());
-      onAdd(title.trim());
+      alert("No se pudo agregar la tarea, intente de nuevo.");
     } finally {
       setLoading(false);
     }

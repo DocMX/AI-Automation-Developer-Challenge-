@@ -26,10 +26,8 @@ export default function NewTodoForm({ onAdd }: Props) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            json: {
-              title: title.trim(),
-              userNumber: "+524921739311",
-            },
+            title: title.trim(),
+            userNumber: "+524921739311", // my telephone number with country code
           }),
         }
       );

@@ -55,7 +55,9 @@ export default function TodoRow({ todo, onToggle, onUpdateTitle, onDelete }: Pro
             </div>
           </div>
         ) : (
-          <span>{todo.title}</span>
+          <span className={`${todo.completed ? 'line-through opacity-60' : ''}`}>
+            {todo.title}
+          </span>
         )}
       </td>
       <td className="px-4 py-3 text-center">

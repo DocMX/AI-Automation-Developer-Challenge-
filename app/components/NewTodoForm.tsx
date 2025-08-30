@@ -33,7 +33,7 @@ export default function NewTodoForm({ onAdd }: Props) {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Add a new task..."
-        className="flex-1 px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+        className="w-full p-2 border-b-2 border-gray-400 bg-transparent text-black placeholder-gray-500 focus:outline-none focus:border-red-500"
         disabled={loading}
       />
       <button

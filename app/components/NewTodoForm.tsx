@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, use, useState } from "react";
+import { FormEvent, useState } from "react";
 import { addTodo } from "../actions";
 
 interface Props {
@@ -14,62 +14,32 @@ export default function NewTodoForm({ onAdd }: Props) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!title.trim()) return;
-
     setLoading(true);
 
     try {
-      const res = await fetch(
-        "https://jorgevega.app.n8n.cloud/webhook-test/webhook",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            json: {
-              title: title.trim(),
-              userNumber: "+524921739311", // my telephone number with country code
-            },
-          }),
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error(`Webhook failed with status ${res.status}`);
-      }
-
-      const data = await res.json();
-
-      if (!data?.title) {
-        throw new Error("No enriched title returned from webhook");
-      }
-
-      const enrichedTitle = data.title;
-
-      // Solo aquí agregamos la tarea
+      // Aquí iría tu webhook
+      const enrichedTitle = title.trim(); // ejemplo
       await addTodo(enrichedTitle);
       onAdd(enrichedTitle);
-
       setTitle("");
-    } catch (err) {
-      console.error("Error adding task:", err);
-      alert("No se pudo agregar la tarea, intente de nuevo.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form className="flex gap-3 bg-gray-800 p-4 rounded-xl shadow-inner" onSubmit={handleSubmit}>
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="New task..."
-        className="flex-1 rounded border px-3 py-2"
+        placeholder="Add a new task..."
+        className="flex-1 px-3 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
         disabled={loading}
       />
       <button
         type="submit"
-        className="bg-green-600 text-white px-4 py-2 rounded"
         disabled={loading}
+        className="bg-red-600 hover:bg-red-700 px-5 py-2 rounded-lg text-white font-semibold transition"
       >
         {loading ? "Adding..." : "Add"}
       </button>

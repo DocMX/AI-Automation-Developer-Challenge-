@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FaTrash, FaEdit } from "react-icons/fa"; // íconos de bote y lápiz
 
 interface Todo {
   id: string;
@@ -27,27 +28,31 @@ export default function TodoRow({ todo, onToggle, onUpdateTitle, onDelete }: Pro
   };
 
   return (
-    <tr className="hover:bg-gray-50 transition duration-150 ease-in-out">
-      <td className="px-4 py-3 text-sm text-gray-800 break-words">
+    <tr className="hover:bg-gray-700 transition duration-150 ease-in-out align-top">
+      <td className="px-4 py-3 text-white break-words">
         {isEditing ? (
-          <div className="flex gap-2">
-            <input
+          <div className="flex flex-col gap-2">
+            <textarea
               value={editTitle}
               onChange={(e) => setEditTitle(e.target.value)}
-              className="border rounded px-2 py-1 text-sm flex-1"
+              className="w-full px-3 py-2 rounded-lg text-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
+              rows={4}
+              placeholder="Edit your task here..."
             />
-            <button
-              onClick={handleSave}
-              className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition"
-            >
-              Save
-            </button>
-            <button
-              onClick={() => { setIsEditing(false); setEditTitle(todo.title); }}
-              className="bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-400 transition"
-            >
-              Cancel
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleSave}
+                className="bg-red-600 px-4 py-2 rounded-lg text-white font-semibold hover:bg-red-700 transition"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => { setIsEditing(false); setEditTitle(todo.title); }}
+                className="bg-gray-600 px-4 py-2 rounded-lg text-white hover:bg-gray-500 transition"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         ) : (
           <span>{todo.title}</span>
@@ -58,24 +63,28 @@ export default function TodoRow({ todo, onToggle, onUpdateTitle, onDelete }: Pro
           type="checkbox"
           checked={todo.completed}
           onChange={() => onToggle(todo.id, !todo.completed)}
-          className="h-5 w-5 cursor-pointer accent-green-500"
+          className="h-5 w-5 cursor-pointer accent-red-500"
         />
       </td>
-      <td className="px-4 py-3 text-center flex justify-center gap-2 flex-wrap">
+      <td className="px-4 py-3 text-center flex justify-center gap-4 flex-wrap">
         {!isEditing && (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="bg-yellow-400 text-white px-3 py-1 rounded text-sm hover:bg-yellow-500 transition"
-          >
-            Edit
-          </button>
+          <>
+            <button
+              onClick={() => setIsEditing(true)}
+              className="text-yellow-400 hover:text-yellow-500 transition text-lg"
+              title="Edit"
+            >
+              <FaEdit />
+            </button>
+            <button
+              onClick={() => onDelete(todo.id)}
+              className="text-red-600 hover:text-red-700 transition text-lg"
+              title="Delete"
+            >
+              <FaTrash />
+            </button>
+          </>
         )}
-        <button
-          onClick={() => onDelete(todo.id)}
-          className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700 transition"
-        >
-          Delete
-        </button>
       </td>
     </tr>
   );

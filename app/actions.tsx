@@ -18,8 +18,8 @@ export async function addTodo(title: string) {
   const { data, error } = await supabaseServer
     .from("todos")
     .insert({ title: title.trim() })
-    .select() // <--- importante para obtener el objeto insertado
-    .single(); // <--- para obtener un solo objeto
+    .select()
+    .single();
 
   return { ok: !error, error: error?.message, data };
 }

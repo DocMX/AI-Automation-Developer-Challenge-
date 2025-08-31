@@ -16,7 +16,12 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
-export default function TodoRow({ todo, onToggle, onUpdateTitle, onDelete }: Props) {
+export default function TodoRow({
+  todo,
+  onToggle,
+  onUpdateTitle,
+  onDelete,
+}: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(todo.title);
 
@@ -47,7 +52,10 @@ export default function TodoRow({ todo, onToggle, onUpdateTitle, onDelete }: Pro
                 Save
               </button>
               <button
-                onClick={() => { setIsEditing(false); setEditTitle(todo.title); }}
+                onClick={() => {
+                  setIsEditing(false);
+                  setEditTitle(todo.title);
+                }}
                 className="bg-gray-600 px-4 py-2 rounded-lg text-white hover:bg-gray-500 transition"
               >
                 Cancel
@@ -55,7 +63,9 @@ export default function TodoRow({ todo, onToggle, onUpdateTitle, onDelete }: Pro
             </div>
           </div>
         ) : (
-          <span className={`${todo.completed ? 'line-through opacity-60' : ''}`}>
+          <span
+            className={`${todo.completed ? "line-through opacity-60" : ""}`}
+          >
             {todo.title}
           </span>
         )}
@@ -73,11 +83,21 @@ export default function TodoRow({ todo, onToggle, onUpdateTitle, onDelete }: Pro
           <>
             <button
               onClick={() => setIsEditing(true)}
-              className="text-yellow-400 hover:text-yellow-500 transition text-lg"
-              title="Edit"
+              className={`text-yellow-400 transition text-lg ${
+                todo.completed
+                  ? "opacity-40 cursor-not-allowed"
+                  : "hover:text-yellow-500"
+              }`}
+              title={
+                todo.completed
+                  ? "No puedes editar una tarea completada"
+                  : "Edit"
+              }
+              disabled={todo.completed}
             >
               <FaEdit />
             </button>
+
             <button
               onClick={() => onDelete(todo.id)}
               className="text-red-600 hover:text-red-700 transition text-lg"

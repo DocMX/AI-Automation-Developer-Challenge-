@@ -105,17 +105,12 @@ export default function TodoPage() {
   return (
     <main className="min-h-screen bg-black flex flex-col items-center justify-start py-10 px-4">
       <div className="w-full max-w-3xl bg-gray-900 rounded-xl shadow-2xl p-6 space-y-6 relative" style={{ fontFamily: "'Indie Flower', cursive" }}>
-        {/* Encabezado tipo libreta */}
         <h1 className="text-4xl font-extrabold text-red-500 tracking-wider text-center mb-6 underline decoration-red-600 decoration-4">
           To-Do List
         </h1>
-
-        {/* Formulario */}
         <div className="bg-gray-800 p-4 rounded-lg shadow-inner">
           <NewTodoForm onAdd={handleAdd} />
         </div>
-
-        {/* Tabla de tareas tipo hoja */}
         <div className="bg-gray-700 p-4 rounded-lg shadow-lg">
           <TodoTable
             todos={currentTodos}
@@ -124,8 +119,6 @@ export default function TodoPage() {
             onDelete={handleDelete}
           />
         </div>
-
-        {/* Paginación */}
         {todos.length > pageSize && (
           <div className="flex justify-between mt-6 items-center text-gray-300">
             <button

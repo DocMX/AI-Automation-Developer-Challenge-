@@ -17,8 +17,7 @@ export default function NewTodoForm({ onAdd }: Props) {
     setLoading(true);
 
     try {
-      // Aquí iría tu webhook
-      const enrichedTitle = title.trim(); // ejemplo
+      const enrichedTitle = title.trim();
       await addTodo(enrichedTitle);
       onAdd(enrichedTitle);
       setTitle("");

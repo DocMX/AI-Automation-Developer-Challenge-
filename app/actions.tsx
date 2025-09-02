@@ -18,10 +18,10 @@ export async function addTodo(title: string) {
   let enrichedTitle = title.trim();
 
   try {
-    const res = await fetch("https://jorgevega.app.n8n.cloud/webhook/webhook", {
+    const res = await fetch("https://jorgevega.app.n8n.cloud/webhook-test/webhook", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ json: { title: enrichedTitle } }),
+      body: JSON.stringify({  title: enrichedTitle  }),
     });
     const data = await res.json();
     enrichedTitle = data?.title.trim() || enrichedTitle;

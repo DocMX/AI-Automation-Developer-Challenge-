@@ -15,14 +15,29 @@ export async function fetchTodos() {
 export async function addTodo(title: string) {
   if (!title.trim()) return { ok: false, error: "Title is required." };
 
+  // Insert into Supabase
   const { data, error } = await supabaseServer
     .from("todos")
     .insert({ title: title.trim() })
     .select()
     .single();
 
-  return { ok: !error, error: error?.message, data };
+  if (error) return { ok: false, error: error.message };
+
+  // Send to n8n webhook
+  try {
+    await fetch("https://jorgevega.app.n8n.cloud/webhook/webhook", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ json: { title: title.trim() } }),
+    });
+  } catch (webhookError) {
+    console.warn("Failed to send to n8n:", webhookError);
+  }
+
+  return { ok: true, data };
 }
+
 
 
 export async function toggleTodo(id: string, completed: boolean) {

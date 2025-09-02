@@ -49,16 +49,20 @@ export default function TodoPage() {
     setCurrentPage((p) => Math.min(p + 1, pageCount - 1));
 
   const handleAdd = async (title: string) => {
-    const tempId = Date.now().toString();
-    const newTodo: Todo = { id: tempId, title, completed: false };
-    setTodos((prev) => [newTodo, ...prev]);
-    setCurrentPage(0);
-
+    setLoading(true);
     try {
-      await addTodo(title);
-      await loadTodos();
-    } catch {
-      setTodos((prev) => prev.filter((t) => t.id !== tempId));
+      const result = await addTodo(title.trim());
+      if (result.ok && result.title) {
+        setTodos((prev) => [
+          { id: Date.now().toString(), title: result.title, completed: false },
+          ...prev,
+        ]);
+        setCurrentPage(0);
+      }
+    } catch (err) {
+      console.error("Error adding todo:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,7 +108,10 @@ export default function TodoPage() {
 
   return (
     <main className="min-h-screen bg-black flex flex-col items-center justify-start py-10 px-4">
-      <div className="w-full max-w-3xl bg-gray-900 rounded-xl shadow-2xl p-6 space-y-6 relative" style={{ fontFamily: "'Indie Flower', cursive" }}>
+      <div
+        className="w-full max-w-3xl bg-gray-900 rounded-xl shadow-2xl p-6 space-y-6 relative"
+        style={{ fontFamily: "'Indie Flower', cursive" }}
+      >
         <h1 className="text-4xl font-extrabold text-red-500 tracking-wider text-center mb-6 underline decoration-red-600 decoration-4">
           To-Do List
         </h1>

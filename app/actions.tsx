@@ -24,14 +24,14 @@ export async function addTodo(title: string) {
       body: JSON.stringify({ json: { title: enrichedTitle } }),
     });
     const data = await res.json();
-    enrichedTitle = data?.title || enrichedTitle;
+    enrichedTitle = data?.titl.trim() || enrichedTitle;
   } catch (err) {
     console.warn("Webhook failed:", err);
   }
 
   
 
-  return { ok: true };
+  return { ok: true, title: enrichedTitle };
 }
 
 

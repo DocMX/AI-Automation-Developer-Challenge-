@@ -17,9 +17,10 @@ export default function NewTodoForm({ onAdd }: Props) {
     setLoading(true);
 
     try {
-      const enrichedTitle = title.trim();
-      await addTodo(enrichedTitle);
-      onAdd(enrichedTitle);
+      const result = await addTodo(title.trim());
+      if (result.ok && result.title) {
+        onAdd(result.title);
+      }
       setTitle("");
     } finally {
       setLoading(false);
@@ -27,7 +28,10 @@ export default function NewTodoForm({ onAdd }: Props) {
   };
 
   return (
-    <form className="flex gap-3 bg-gray-800 p-4 rounded-xl shadow-inner" onSubmit={handleSubmit}>
+    <form
+      className="flex gap-3 bg-gray-800 p-4 rounded-xl shadow-inner"
+      onSubmit={handleSubmit}
+    >
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}

@@ -48,22 +48,12 @@ export default function TodoPage() {
   const handleNext = () =>
     setCurrentPage((p) => Math.min(p + 1, pageCount - 1));
 
-  const handleAdd = async (title: string) => {
-    setLoading(true);
-    try {
-      const result = await addTodo(title.trim());
-      if (result.ok && result.title) {
-        setTodos((prev) => [
-          { id: Date.now().toString(), title: result.title, completed: false },
-          ...prev,
-        ]);
-        setCurrentPage(0);
-      }
-    } catch (err) {
-      console.error("Error adding todo:", err);
-    } finally {
-      setLoading(false);
-    }
+  const handleAdd = (title: string) => {
+    setTodos((prev) => [
+      { id: Date.now().toString(), title, completed: false },
+      ...prev,
+    ]);
+    setCurrentPage(0);
   };
 
   const handleToggle = async (id: string, completed: boolean) => {
@@ -107,18 +97,31 @@ export default function TodoPage() {
     return <p className="p-6 text-white text-center text-lg">Loading...</p>;
 
   return (
-    <main className="min-h-screen bg-black flex flex-col items-center justify-start py-10 px-4">
+    <main className="min-h-screen bg-[#fdf6e3] flex flex-col items-center justify-start py-10 px-4">
       <div
-        className="w-full max-w-3xl bg-gray-900 rounded-xl shadow-2xl p-6 space-y-6 relative"
-        style={{ fontFamily: "'Indie Flower', cursive" }}
+        className="w-full max-w-3xl bg-[#fffaf0] rounded-lg shadow-xl p-8 relative border-[1.5px] border-[#d6cbb3]"
+        style={{
+          fontFamily: "'Indie Flower', cursive",
+          backgroundImage: `repeating-linear-gradient(
+          to bottom,
+          transparent,
+          transparent 30px,
+          rgba(0,0,0,0.08) 31px
+        )`,
+        }}
       >
-        <h1 className="text-4xl font-extrabold text-red-500 tracking-wider text-center mb-6 underline decoration-red-600 decoration-4">
+
+        <div className="absolute left-12 top-0 bottom-0 w-[2px] bg-red-400 opacity-70"></div>
+
+        <h1 className="text-4xl font-extrabold text-red-600 tracking-wider text-center mb-8 underline decoration-red-400 decoration-4">
           To-Do List
         </h1>
-        <div className="bg-gray-800 p-4 rounded-lg shadow-inner">
+
+        <div className="bg-[#fffdf5]/80 p-4 rounded-md shadow-inner border border-[#e6dcc8]">
           <NewTodoForm onAdd={handleAdd} />
         </div>
-        <div className="bg-gray-700 p-4 rounded-lg shadow-lg">
+
+        <div className="bg-[#fffdf5]/90 p-4 rounded-md shadow-lg mt-6 border border-[#e6dcc8]">
           <TodoTable
             todos={currentTodos}
             onToggle={handleToggle}
@@ -126,22 +129,23 @@ export default function TodoPage() {
             onDelete={handleDelete}
           />
         </div>
+
         {todos.length > pageSize && (
-          <div className="flex justify-between mt-6 items-center text-gray-300">
+          <div className="flex justify-between mt-6 items-center text-gray-700 font-bold">
             <button
               onClick={handlePrev}
               disabled={currentPage === 0}
-              className="bg-gray-800 px-4 py-2 rounded-lg disabled:opacity-50 hover:bg-gray-700 transition"
+              className="bg-[#f3e7d3] px-4 py-2 rounded-md disabled:opacity-50 hover:bg-[#e8dac4] transition border border-[#d6cbb3]"
             >
               Previous
             </button>
-            <span className="text-sm text-gray-400">
+            <span className="text-sm text-gray-600">
               Page {currentPage + 1} of {pageCount}
             </span>
             <button
               onClick={handleNext}
               disabled={currentPage === pageCount - 1}
-              className="bg-gray-800 px-4 py-2 rounded-lg disabled:opacity-50 hover:bg-gray-700 transition"
+              className="bg-[#f3e7d3] px-4 py-2 rounded-md disabled:opacity-50 hover:bg-[#e8dac4] transition border border-[#d6cbb3]"
             >
               Next
             </button>

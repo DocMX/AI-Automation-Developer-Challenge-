@@ -29,20 +29,20 @@ export default function NewTodoForm({ onAdd }: Props) {
 
   return (
     <form
-      className="flex gap-3 bg-gray-800 p-4 rounded-xl shadow-inner"
+      className="flex gap-3 bg-yellow-50 p-4 rounded-xl shadow-inner border border-yellow-200"
       onSubmit={handleSubmit}
     >
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Add a new task..."
-        className="w-full p-2 border-b-2 border-gray-400 bg-transparent text-white placeholder-gray-500 focus:outline-none focus:border-red-500"
+        className="w-full p-2 border-b-2 border-yellow-300 bg-transparent text-gray-800 placeholder-gray-500 font-serif focus:outline-none focus:border-red-500 shadow-inner"
         disabled={loading}
       />
       <button
         type="submit"
         disabled={loading}
-        className="bg-red-600 hover:bg-red-700 px-5 py-2 rounded-lg text-white font-semibold transition"
+        className="bg-red-600 hover:bg-red-700 px-5 py-2 rounded-lg text-white font-semibold transition shadow"
       >
         {loading ? "Adding..." : "Add"}
       </button>

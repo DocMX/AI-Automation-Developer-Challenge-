@@ -33,21 +33,21 @@ export default function TodoRow({
   };
 
   return (
-    <tr className="hover:bg-gray-700 transition duration-150 ease-in-out align-top">
-      <td className="px-4 py-3 text-white break-words">
+    <tr className="hover:bg-yellow-50 transition duration-150 ease-in-out align-top border-b border-yellow-200 bg-[repeating-linear-gradient(transparent, transparent_23px, rgba(0,0,0,0.05)_24px)]">
+      <td className="px-4 py-3 text-gray-800 break-words font-serif">
         {isEditing ? (
           <div className="flex flex-col gap-2">
             <textarea
               value={editTitle}
               onChange={(e) => setEditTitle(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg text-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
+              className="w-full px-3 py-2 rounded-lg text-lg bg-yellow-50 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none font-serif shadow-inner"
               rows={4}
               placeholder="Edit your task here..."
             />
             <div className="flex gap-2">
               <button
                 onClick={handleSave}
-                className="bg-red-600 px-4 py-2 rounded-lg text-white font-semibold hover:bg-red-700 transition"
+                className="bg-red-600 px-4 py-2 rounded-lg text-white font-semibold hover:bg-red-700 transition shadow"
               >
                 Save
               </button>
@@ -56,7 +56,7 @@ export default function TodoRow({
                   setIsEditing(false);
                   setEditTitle(todo.title);
                 }}
-                className="bg-gray-600 px-4 py-2 rounded-lg text-white hover:bg-gray-500 transition"
+                className="bg-gray-600 px-4 py-2 rounded-lg text-white hover:bg-gray-500 transition shadow"
               >
                 Cancel
               </button>
@@ -83,10 +83,10 @@ export default function TodoRow({
           <>
             <button
               onClick={() => setIsEditing(true)}
-              className={`text-yellow-400 transition text-lg ${
+              className={`text-yellow-700 transition text-lg ${
                 todo.completed
                   ? "opacity-40 cursor-not-allowed"
-                  : "hover:text-yellow-500"
+                  : "hover:text-yellow-800"
               }`}
               title={
                 todo.completed

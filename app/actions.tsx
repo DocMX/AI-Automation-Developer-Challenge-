@@ -29,13 +29,9 @@ export async function addTodo(title: string) {
     console.warn("Webhook failed:", err);
   }
 
-  const { data, error } = await supabaseServer
-    .from("todos")
-    .insert({ title: enrichedTitle })
-    .select()
-    .single();
+  
 
-  return { ok: !error, error: error?.message, data };
+  return { ok: true };
 }
 
 

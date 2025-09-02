@@ -24,7 +24,7 @@ export async function addTodo(title: string) {
       body: JSON.stringify({ json: { title: enrichedTitle } }),
     });
     const data = await res.json();
-    enrichedTitle = data?.titl.trim() || enrichedTitle;
+    enrichedTitle = data?.title.trim() || enrichedTitle;
   } catch (err) {
     console.warn("Webhook failed:", err);
   }
